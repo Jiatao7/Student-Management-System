@@ -72,6 +72,19 @@ def main():
                     print()
                     print(student[1])
                     print(f"Email: {student[2]}")
+
+                    # Find all courses the student is taking
+                    courseList = []
+                    mycursor.execute(f"""SELECT courses.name FROM courses
+                        INNER JOIN enrollment
+                        USING(courseID)
+                        WHERE studentID = {studentID};
+                    """)
+                    courses = mycursor.fetchall()
+                    for course in courses:
+                        courseList.append(course[0])
+                    print("Courses: " + ", ".join(courseList))
+
                     input("Press enter to exit: ")
                     print()
                 else:
@@ -91,6 +104,19 @@ def main():
                     print()
                     print(course[1])
                     print(f"Description: {course[2]}")
+
+                    # Find all students in course
+                    studentList = []
+                    mycursor.execute(f"""SELECT students.name FROM students
+                        INNER JOIN enrollment
+                        USING(studentID)
+                        WHERE courseID = {courseID};
+                    """)
+                    students = mycursor.fetchall()
+                    for student in students:
+                        studentList.append(student[0])
+                    print("Students Enrolled: " + ", ".join(studentList))
+
                     input("Press enter to exit: ")
                     print()
                 else:
@@ -117,19 +143,19 @@ def main():
             print("List of students: ")
             mycursor.execute("SELECT * FROM students")
             for student in mycursor:
-                print(f"{student[0]}: {student[1]}")
+                print(f"{student[1]} - {student[0]}")
             studentID = input("Select a student (enter id): ")
             print()
             print("List of courses: ")
             mycursor.execute("SELECT * FROM courses")
             for course in mycursor:
-                print(f"{course[0]}: {course[1]}")
+                print(f"{course[1]} - {course[0]}")
             courseID = input("Select a course to enroll in (enter id): ")
 
             # Add enrollment
             mycursor.execute("INSERT INTO enrollment (studentID, courseID) VALUES (%s, %s)", (studentID, courseID))
             mydb.commit()
-            print("Student succesfully enrolled")
+            print("Student successfully enrolled")
 
         elif (action == 6):
             break
