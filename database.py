@@ -74,6 +74,25 @@ def main():
             mydb.commit()
             print("Course successfully added")
 
+        if(action == 5):
+            # Select student and course
+            print("List of students: ")
+            mycursor.execute("SELECT * FROM students")
+            for student in mycursor:
+                print(f"{student[0]}: {student[1]}")
+            studentID = input("Select a student (enter id): ")
+            print()
+            print("List of courses: ")
+            mycursor.execute("SELECT * FROM courses")
+            for course in mycursor:
+                print(f"{course[0]}: {course[1]}")
+            courseID = input("Select a course to enroll in (enter id): ")
+
+            # Add enrollment
+            mycursor.execute("INSERT INTO enrollment (studentID, courseID) VALUES (%s, %s)", (studentID, courseID))
+            mydb.commit()
+            print("Student succesfully enrolled")
+
         elif (action == 6):
             break
 
