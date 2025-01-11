@@ -58,6 +58,44 @@ def main():
         action = int(input("Enter action (1-6): "))      
         print("")
 
+        if(action == 1):
+            print("All students")
+            mycursor.execute("SELECT * FROM students")
+            for student in mycursor:
+                print(f"Name: {student[1]}, Email: {student[2]}, ID: {student[0]}")
+            while True:
+                action = input("Enter a student's id to view more details (or press enter to exit): ")
+                if(action):
+                    studentID = int(action)
+                    mycursor.execute(f"SELECT * FROM students WHERE studentID = {studentID}")
+                    student = mycursor.fetchone()
+                    print()
+                    print(student[1])
+                    print(f"Email: {student[2]}")
+                    input("Press enter to exit: ")
+                    print()
+                else:
+                    break
+        
+        if(action == 2):
+            print("All courses")
+            mycursor.execute("SELECT * FROM courses")
+            for course in mycursor:
+                print(f"Name: {course[1]}, Description: {course[2]}, ID: {course[0]}")
+            while True:
+                action = input("Enter a course's id to view more details (or press enter to exit): ")
+                if(action):
+                    courseID = int(action)
+                    mycursor.execute(f"SELECT * FROM courses WHERE courseID = {courseID}")
+                    course = mycursor.fetchone()
+                    print()
+                    print(course[1])
+                    print(f"Description: {course[2]}")
+                    input("Press enter to exit: ")
+                    print()
+                else:
+                    break
+                
         if(action == 3):
             print("Enter student details:")
             name = input("Enter student: ")
