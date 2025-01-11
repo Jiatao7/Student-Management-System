@@ -11,9 +11,12 @@ mydb = mysql.connector.connect(
     database="student_management"
 )
 mycursor = mydb.cursor()
+
+'''
 mycursor.execute("SHOW TABLES")
 for table in mycursor:
     print(table)
+'''
 
 # Create tables if they do not exist already
 def createTables():
@@ -43,3 +46,38 @@ def createTables():
 
 createTables()
 
+def main():
+    while True:
+        print("Menu")
+        print("1: View students")
+        print("2: View courses")
+        print("3: Add student")
+        print("4: Add course")
+        print("5: Enroll student in a course")
+        print("6: Exit")
+        action = int(input("Enter action (1-6): "))      
+        print("")
+
+        if(action == 3):
+            print("Enter student details:")
+            name = input("Enter student: ")
+            email = input("Enter email: ")
+            mycursor.execute("INSERT INTO students (name, email) VALUES (%s, %s)", (name, email))
+            mydb.commit()
+            print("Student successfully added")
+        
+        if(action == 4):
+            print("Enter course details:")
+            name = input("Enter course: ")
+            description = input("Enter course description: ")
+            mycursor.execute("INSERT INTO courses (name, description) VALUES (%s, %s)", (name, description))
+            mydb.commit()
+            print("Course successfully added")
+
+        elif (action == 6):
+            break
+
+        print("")
+
+main()
+mydb.commit()
